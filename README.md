@@ -84,6 +84,49 @@ npm run dev
 
 ---
 
+## 🌐 4. Free Deployment Guide (100% Free Cloud Hosting)
+
+The repository includes pre-configured deployment manifests (`render.yaml`, `vercel.json`, `Procfile`, and `backend/Dockerfile`) to make deploying to free cloud tiers fast and straightforward:
+
+### Method A: 1-Click Blueprint on Render (Fullstack Free)
+1. Go to [render.com](https://render.com) and sign in with your GitHub account (**Maryam271**).
+2. Click **New +** > **Blueprint**.
+3. Connect your repository: `Maryam271/ReThreadAI`.
+4. Render automatically parses [render.yaml](file:///c:/Users/muet/Desktop/ReThreadAI/render.yaml) to provision:
+   - **`rethread-api`**: FastAPI Web Service (Free Tier)
+   - **`rethread-frontend`**: React Vite Static Site (Free Tier)
+5. *(Optional)* Add your `STABILITY_API_KEY` under the Environment tab of `rethread-api`.
+6. Click **Apply** — Render handles the build and wiring automatically!
+
+---
+
+### Method B: Vercel (Frontend) + Render (Backend)
+
+#### Step 1: Deploy Backend on Render (Free Web Service)
+1. In Render, select **New +** > **Web Service**.
+2. Connect `Maryam271/ReThreadAI`.
+3. Set the following settings:
+   - **Root Directory:** `backend`
+   - **Runtime:** `Python 3`
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
+   - **Instance Type:** `Free`
+4. Under **Environment Variables**, add:
+   - `PYTHON_VERSION`: `3.11.9`
+   - `STABILITY_API_KEY`: *(Your key, optional)*
+5. Click **Create Web Service**. Copy your live backend URL (e.g., `https://rethread-api.onrender.com`).
+
+#### Step 2: Deploy Frontend on Vercel (Free Static Tier)
+1. Go to [vercel.com](https://vercel.com) and import `Maryam271/ReThreadAI`.
+2. Configure project settings:
+   - **Framework Preset:** `Vite`
+   - **Root Directory:** `frontend`
+3. Expand **Environment Variables** and add:
+   - `VITE_API_BASE_URL`: `https://your-backend.onrender.com` (from Step 1)
+4. Click **Deploy**. Vercel will build and serve your frontend globally for free!
+
+---
+
 ## 🧪 4. Testing & Verification
 
 Automated unit and integration test suites are included to verify all components, image processing pipelines, and API endpoints.
