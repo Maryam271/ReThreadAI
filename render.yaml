@@ -1,0 +1,41 @@
+services:
+  # ==========================================
+  # 1. FastAPI Python Backend Service
+  # ==========================================
+  - type: web
+    name: rethread-api
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: HOST
+        value: 0.0.0.0
+      - key: STABILITY_API_KEY
+        sync: false
+      - key: REPLICATE_API_TOKEN
+        sync: false
+
+  # ==========================================
+  # 2. React + Vite Frontend (Static Site)
+  # ==========================================
+  - type: web
+    name: rethread-frontend
+    env: static
+    region: oregon
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: rethread-api
+          property: host
